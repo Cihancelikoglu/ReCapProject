@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results.Abstract;
+using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -16,37 +19,49 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetByAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetByAll(), Messages.CarListed);
         }
 
-        public Car GetById(int carId)
+        public IDataResult<Car> GetById(int carId)
         {
-            return _carDal.Get(x => x.CarId == carId);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId), Messages.CarListed);
         }
 
-        public List<CarDetailDto> GetCarDetail()
+        public IDataResult<List<CarDetailDto>> GetCarDetail()
         {
-            return _carDal.GetCarDetail();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(), Messages.CarListed);
         }
 
-        public void Insert(Car car)
+        public IResult Add(Car car)
         {
-            Console.WriteLine(car.CarId + " " + "Id Numarasına Ait Yeni Araç Eklendi");
+            if (car.BrandId < 0)
+            {
+                return new ErrorResult(Messages.ErrorCarAdded);
+            }
             _carDal.Add(car);
+            return new Result(true, Messages.CarAdded);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
-            Console.WriteLine(car.CarId + " " + "Id Numarasına Ait Araç Güncellendi");
+            if (car.CarId < 0)
+            {
+                return new ErrorResult(Messages.ErrorCarUpdated);
+            }
             _carDal.Update(car);
+            return new Result(true, Messages.CarUpdated);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
-            Console.WriteLine(car.CarId + " " + "Id Numarasına Ait Araç Silindi");
+            if (car.CarId < 0)
+            {
+                return new ErrorResult(Messages.ErrorCarDeleted);
+            }
             _carDal.Delete(car);
+            return new Result(true, Messages.CarDeleted);
         }
     }
 }

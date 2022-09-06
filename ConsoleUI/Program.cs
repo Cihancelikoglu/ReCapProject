@@ -18,16 +18,18 @@ namespace ConsoleUI
         {
             Console.WriteLine("-----------GetByAll------------");
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetAll())
+            var result1 = carManager.GetAll();
+            foreach (var car in result1.Data)
             {
                 Console.WriteLine("Açıklama: " + car.Description + " " + "Fiyat: " + car.DailyPrice);
             }
 
             Console.WriteLine("-----------GetById------------");
-            Console.WriteLine(carManager.GetById(2).Description);
+            Console.WriteLine(carManager.GetById(2).Data.Description);
 
             Console.WriteLine("-----------CarDetailDto------------");
-            foreach (var carDetail in carManager.GetCarDetail())
+            var result2 = carManager.GetCarDetail();
+            foreach (var carDetail in result2.Data)
             {
                 Console.WriteLine(carDetail.CarId + " " + carDetail.BrandName + " / " + carDetail.ColorName + " / " + carDetail.DailyPrice);
             }
