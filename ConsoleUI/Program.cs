@@ -10,8 +10,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManagerTest();
-
+            //CarManagerTest();
         }
 
         private static void CarManagerTest()
@@ -38,7 +37,7 @@ namespace ConsoleUI
             Car car1 = new Car { BrandId = 1, ColorId = 4, ModelYear = new DateTime(2021, 12, 12), DailyPrice = 1500, Description = "Mercedes E200" };
             if (car1.DailyPrice > 0 && car1.Description.Length >= 2)
             {
-                carManager.Insert(car1);
+                carManager.Add(car1);
             }
 
             //Console.WriteLine("-----------Delete------------");

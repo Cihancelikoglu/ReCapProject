@@ -13,7 +13,7 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        ICarDal _carDal;
+        private readonly ICarDal _carDal;
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
@@ -21,22 +21,37 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetByAll(), Messages.CarListed);
+            if (DateTime.Now.Hour == 11)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetByAll(), Messages.CarsListed);
         }
 
         public IDataResult<Car> GetById(int carId)
         {
+            if (DateTime.Now.Hour == 12)
+            {
+                return new ErrorDataResult<Car>(Messages.MaintenanceTime);
+            }
+
             return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId), Messages.CarListed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetail()
         {
+            if (DateTime.Now.Hour == 12)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintenanceTime);
+            }
+
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(), Messages.CarListed);
         }
 
         public IResult Add(Car car)
         {
-            if (car.BrandId < 0)
+            if (car.DailyPrice < 0)
             {
                 return new ErrorResult(Messages.ErrorCarAdded);
             }

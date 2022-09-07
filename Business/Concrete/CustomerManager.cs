@@ -17,10 +17,6 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IResult Delete(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
 
         public IDataResult<List<Customer>> GetAll()
         {
@@ -43,6 +39,11 @@ namespace Business.Concrete
         }
 
         public IResult Update(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult Delete(Customer customer)
         {
             throw new NotImplementedException();
         }

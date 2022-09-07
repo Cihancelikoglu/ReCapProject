@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.Constants;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -24,7 +26,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetByAll(), "Kiralık Araçlar Listelendi");
         }
 
         public IDataResult<Rental> GetById(int rentalId)
@@ -39,7 +41,7 @@ namespace Business.Concrete
                 _rentalDal.Add(rental);
                 return new Result(true, "Araç Kiralandı");
             }
-            
+
             return new ErrorResult("Araç Yok.");
         }
 
