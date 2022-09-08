@@ -7,7 +7,7 @@ using Entities.DTOs;
 
 namespace Business.Abstract
 {
-    internal interface IRentalService
+    public interface IRentalService
     {
         IDataResult<List<Rental>> GetAll();
         IDataResult<Rental> GetById(int rentalId);

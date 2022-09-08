@@ -19,19 +19,15 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        public IResult Delete(Rental rental)
-        {
-            throw new NotImplementedException();
-        }
-
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetByAll(), "Kiralık Araçlar Listelendi");
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), "Kiralık Araçlar Listelendi");
         }
 
         public IDataResult<Rental> GetById(int rentalId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.Id == rentalId), "Araç Listelendi");
+
         }
 
         public IResult Add(Rental rental)
@@ -46,6 +42,11 @@ namespace Business.Concrete
         }
 
         public IResult Update(Rental rental)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult Delete(Rental rental)
         {
             throw new NotImplementedException();
         }
