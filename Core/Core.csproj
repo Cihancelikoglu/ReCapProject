@@ -10,7 +10,14 @@
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
     <PackageReference Include="Castle.Core" Version="5.1.0" />
     <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+    <PackageReference Include="Uno.UI" Version="4.4.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utilities\Helpers\FileHelper\Abstract\" />
+    <Folder Include="Utilities\Helpers\FileHelper\Concrete\" />
   </ItemGroup>
 
 </Project>
