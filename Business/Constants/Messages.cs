@@ -28,5 +28,13 @@ namespace Business.Constants
         public static string ColorAdded = "Yeni Renk Eklendi";
         public static string ColorUpdated = "Renk Güncellendi";
         public static string ColorDeleted = "Renk Silindi";
+
+        public static string AuthorizationDenied = "Yetkiniz Yok";
+        public static string UserRegistered = "Kayıt Oldu";
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
+        public static string PasswordError = "Parola Hatalı";
+        public static string SuccessfulLogin = "Giriş Başarılı";
+        public static string UserAlreadyExists = "Kullanıcı Mevcut";
+        public static string AccessTokenCreated = "Token Oluşturuldu";
     }
 }
