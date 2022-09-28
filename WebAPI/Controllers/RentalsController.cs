@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace WebAPI.Controllers
 {
@@ -32,6 +33,29 @@ namespace WebAPI.Controllers
             var result = _rentalService.GetById(rentalId);
             if (result.IsSuccess)
             {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getrentaldetail")]
+        public IActionResult GetRentalDetail()
+        {
+            var result = _rentalService.GetRentalDetail();
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("rentaldatecontrol")]
+        public IActionResult RentalDateControl(Rental rental)
+        {
+            var result = _rentalService.RentalDateControl(rental);
+            if (result.IsSuccess)
+            {
+                //Thread.Sleep(3000);
                 return Ok(result);
             }
             return BadRequest(result);

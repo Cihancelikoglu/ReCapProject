@@ -4,6 +4,7 @@ using Castle.DynamicProxy;
 using Core.Extensions;
 using Core.Utilities.Interceptor;
 using Core.Utilities.IoC;
+using Core.Utilities.IoC.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 

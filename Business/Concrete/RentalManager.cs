@@ -5,8 +5,12 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
+using Core.Utilities.Business;
 using Entities.DTOs;
 
 namespace Business.Concrete
@@ -30,15 +34,42 @@ namespace Business.Concrete
 
         }
 
+        public IDataResult<List<RentalDetailDto>> GetRentalDetail()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetail(), Messages.CarListed);
+        }
+
+        [ValidationAspect(typeof(RentalValidator))]
+        public IResult RentalDateControl(Rental rental)
+        {
+            IResult result = BusinessRules.Run(CheckIfRentalDate(rental));
+
+            if (result != null)
+            {
+                return result;
+            }
+            return new Result(true, "Araç Kiralanabilir");
+        }
+
         public IResult Add(Rental rental)
         {
-            if (rental.ReturnDate != null)
+            var result = _rentalDal.GetAll(c => c.CarId == rental.CarId && (c.ReturnDate == null || c.ReturnDate >= rental.RentDate));
+            if (rental.ReturnDate < rental.RentDate)
             {
-                _rentalDal.Add(rental);
-                return new Result(true, "Araç Kiralandı");
+                return new Result(false, "Dönüş Tarihi Kiralama Tarihinden Küçük Olamaz");
             }
-
-            return new ErrorResult("Araç Yok.");
+            else
+            {
+                if (result.Count > 0)
+                {
+                    return new ErrorResult("Bu Tarikler Arası Aracı Kiralayamızsınız.");
+                }
+                else
+                {
+                    _rentalDal.Add(rental);
+                    return new Result(true, "Araç Kiralandı");
+                }
+            }
         }
 
         public IResult Update(Rental rental)
@@ -50,5 +81,19 @@ namespace Business.Concrete
         {
             throw new NotImplementedException();
         }
+
+        private IResult CheckIfRentalDate(Rental rental)
+        {
+            var result = _rentalDal.GetAll(c => c.CarId == rental.CarId && (c.ReturnDate == null || c.ReturnDate >= rental.RentDate)).Any();
+            if (result)
+            {
+                return new ErrorResult("Bu Tarihler Arası Aracı Kiralayamızsınız.");
+            }
+            else
+            {
+                return new SuccessResult("Araç Kiralanabilir");
+            }
+        }
+
     }
 }

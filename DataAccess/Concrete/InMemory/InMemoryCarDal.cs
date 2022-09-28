@@ -67,5 +67,10 @@ namespace DataAccess.Concrete.InMemory
             carUpdate.Description = car.Description;
 
         }
+
+        public List<CarDetailDto> GetCarDetail(Expression<Func<CarDetailDto, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

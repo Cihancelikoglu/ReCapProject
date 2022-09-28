@@ -3,12 +3,10 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Entities.DTOs;
 
 namespace DataAccess.Abstract
 {
-    public interface IRentalDal : IEntityRepository<Rental>
+    public interface ICreditCardDal: IEntityRepository<CreditCard>
     {
-        List<RentalDetailDto> GetRentalDetail();
     }
 }
