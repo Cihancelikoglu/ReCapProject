@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
@@ -42,12 +43,24 @@ namespace Business.Concrete
 
         public IResult Update(Color color)
         {
+            IResult result = BusinessRules.Run(CheckIfColorId(color.Id));
+            if (result != null)
+            {
+                return result;
+            }
+
             _colorDal.Update(color);
             return new SuccessResult(Messages.ColorUpdated);
         }
 
         public IResult Delete(Color color)
         {
+            IResult result = BusinessRules.Run(CheckIfColorId(color.Id));
+            if (result != null)
+            {
+                return result;
+            }
+
             _colorDal.Delete(color);
             return new SuccessResult(Messages.ColorDeleted);
         }
@@ -58,6 +71,21 @@ namespace Business.Concrete
             if (result == 0)
             {
                 return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfColorId(int colorId)
+        {
+            if (colorId == 0)
+            {
+                return new ErrorResult(Messages.ErrorColorUpdated);
+            }
+
+            var result = _colorDal.GetAll(c => c.Id == colorId).Any();
+            if (!result)
+            {
+                return new ErrorResult(Messages.ErrorColorUpdated);
             }
             return new SuccessResult();
         }

@@ -27,6 +27,7 @@ namespace Business.Constants
         public static string BrandDeleted = "Marka Silindi";
         public static string ColorAdded = "Yeni Renk Eklendi";
         public static string ColorUpdated = "Renk Güncellendi";
+        public static string ErrorColorUpdated = "Renk Güncellendirken Hata Oluştu";
         public static string ColorDeleted = "Renk Silindi";
 
         public static string AuthorizationDenied = "Yetkiniz Yok";

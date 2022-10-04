@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -47,22 +49,41 @@ namespace Business.Concrete
 
         public IResult Update(Brand brand)
         {
-            if (brand.BrandName.Length < 0)
+            IResult result = BusinessRules.Run(CheckIfBrandId(brand.Id));
+            if (result != null)
             {
-                return new ErrorResult(Messages.ErrorBrandUpdated);
+                return result;
             }
+
             _brandDal.Update(brand);
-            return new Result(true, Messages.BrandUpdated);
+            return new SuccessResult(Messages.BrandUpdated);
         }
 
         public IResult Delete(Brand brand)
         {
-            if (brand.Id < 0)
+            IResult result = BusinessRules.Run(CheckIfBrandId(brand.Id));
+            if (result != null)
             {
-                return new ErrorResult(Messages.ErrorBrandDeleted);
+                return result;
             }
+
             _brandDal.Delete(brand);
-            return new Result(true, Messages.BrandDeleted);
+            return new SuccessResult(Messages.BrandDeleted);
+        }
+
+        private IResult CheckIfBrandId(int brandId)
+        {
+            if (brandId == 0)
+            {
+                return new ErrorResult(Messages.ErrorCarUpdated);
+            }
+
+            var result = _brandDal.GetAll(c => c.Id == brandId).Any();
+            if (!result)
+            {
+                return new ErrorResult(Messages.ErrorCarUpdated);
+            }
+            return new SuccessResult();
         }
     }
 }

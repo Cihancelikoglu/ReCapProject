@@ -12,6 +12,8 @@ using Business.BusinessAspect.Aspect;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Caching;
 using Core.Aspect.Autofac.Validation;
+using System.Linq;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -50,7 +52,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(), Messages.CarListed);
         }
 
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
@@ -62,22 +64,26 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
-            if (car.CarId < 0)
+            IResult result = BusinessRules.Run(CheckIfCarId(car.CarId));
+            if (result != null)
             {
-                return new ErrorResult(Messages.ErrorCarUpdated);
+                return result;
             }
+
             _carDal.Update(car);
-            return new Result(true, Messages.CarUpdated);
+            return new SuccessResult(Messages.CarUpdated);
         }
 
         public IResult Delete(Car car)
         {
-            if (car.CarId < 0)
+            IResult result = BusinessRules.Run(CheckIfCarId(car.CarId));
+            if (result != null)
             {
-                return new ErrorResult(Messages.ErrorCarDeleted);
+                return result;
             }
+
             _carDal.Delete(car);
-            return new Result(true, Messages.CarDeleted);
+            return new SuccessResult(Messages.CarDeleted);
         }
 
         public IDataResult<List<CarDetailDto>> GetAllByColor(int colorId)
@@ -98,6 +104,21 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetCarFilter(int colorId, int brandId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(c => c.ColorId == colorId && c.BrandId == brandId));
+        }
+
+        private IResult CheckIfCarId(int carId)
+        {
+            if (carId == 0)
+            {
+                return new ErrorResult(Messages.ErrorCarUpdated);
+            }
+
+            var result = _carDal.GetAll(c => c.CarId == carId).Any();
+            if (!result)
+            {
+                return new ErrorResult(Messages.ErrorCarUpdated);
+            }
+            return new SuccessResult();
         }
     }
 }
