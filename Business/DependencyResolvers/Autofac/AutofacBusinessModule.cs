@@ -44,6 +44,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>();
 
+            builder.RegisterType<UserFindexManager>().As<IUserFindexService>().SingleInstance();
+            builder.RegisterType<EfUserFindexDal>().As<IUserFindexDal>();
+
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 

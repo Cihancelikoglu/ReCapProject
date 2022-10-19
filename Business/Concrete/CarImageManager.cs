@@ -62,17 +62,29 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, CarImage carImage)
         {
+            IResult result = BusinessRules.Run(CheckIfImageId(carImage.Id));
+            if (result != null)
+            {
+                return result;
+            }
+
             carImage.ImagePath = _fileHelper.Update(file, PathConstants.pathSeparator + carImage.ImagePath, PathConstants.pathSeparator);
             carImage.Date = DateTime.Now;
             _carImageDal.Update(carImage);
-            return new SuccessResult();
+            return new SuccessResult(Messages.CarUpdated);
         }
 
         public IResult Delete(CarImage carImage)
         {
+            IResult result = BusinessRules.Run(CheckIfImageId(carImage.Id));
+            if (result != null)
+            {
+                return result;
+            }
+
             _fileHelper.Delete(PathConstants.pathSeparator + carImage.ImagePath);
             _carImageDal.Delete(carImage);
-            return new SuccessResult();
+            return new SuccessResult(Messages.ImageDeleted);
         }
 
         private IResult CheckIfCarImageLimit(int carId)
@@ -99,6 +111,21 @@ namespace Business.Concrete
             List<CarImage> carImage = new List<CarImage>();
             carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = "DefaultImage.jpg" });
             return new SuccessDataResult<List<CarImage>>(carImage);
+        }
+
+        private IResult CheckIfImageId(int imageId)
+        {
+            if (imageId == 0)
+            {
+                return new ErrorResult(Messages.ErrorImage);
+            }
+
+            var result = _carImageDal.GetAll(c => c.Id == imageId).Any();
+            if (!result)
+            {
+                return new ErrorResult(Messages.ErrorImage);
+            }
+            return new SuccessResult();
         }
     }
 }

@@ -30,7 +30,8 @@ namespace DataAccess.Concrete.EntityFrameWork
                                  ColorName = a.ColorName,
                                  DailyPrice = c.DailyPrice,
                                  ModelYear = c.ModelYear,
-                                 Description =c.Description,
+                                 Description = c.Description,
+                                 Findex = c.Findex,
                                  CarImages = (from carimg in context.CarImages where carimg.CarId == c.CarId select carimg.ImagePath).FirstOrDefault()
                              };
                 return filter != null 

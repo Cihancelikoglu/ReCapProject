@@ -18,6 +18,7 @@ namespace Entities.DTOs
         public DateTime ModelYear { get; set; }
         public string CarImages { get; set; }
         public string Description { get; set; }
+        public int Findex { get; set; }
 
     }
 }

@@ -6,6 +6,7 @@ using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTOs;
+using System;
 
 namespace Business.Concrete
 {
@@ -22,6 +23,9 @@ namespace Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
+            //Random randomFindex = new Random();
+            //int userFindex = randomFindex.Next(1,1900);
+
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
             var user = new User

@@ -11,6 +11,7 @@ namespace DataAccess.Concrete.EntityFrameWork
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseSqlServer(@"Server=mssql01.trwww.com; Database=crea9749_rentacar; User ID=rentacar; Password=Asd159**+");
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Db_RentACar;Trusted_Connection=true");
         }
 
@@ -19,6 +20,7 @@ namespace DataAccess.Concrete.EntityFrameWork
         public DbSet<Color> Colors { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserFindex> UserFindex { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Customer> Customers { get; set; }

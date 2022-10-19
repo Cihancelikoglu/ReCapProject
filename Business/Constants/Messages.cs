@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,5 +38,14 @@ namespace Business.Constants
         public static string SuccessfulLogin = "Giriş Başarılı";
         public static string UserAlreadyExists = "Kullanıcı Mevcut";
         public static string AccessTokenCreated = "Token Oluşturuldu";
+
+        public static string ImageDeleted = "Resim Silindi";
+        public static string ErrorImage = "İşlem Hatalı";
+
+        public static string UserUpdated = "Hesap Güncellendi";
+        public static string ErrorUserUpdated = "Güncelleme Sırasında Hata Oluştu";
+
+        public static string OldPasswordError = "Eski Şifre Hatalı";
+        public static string PasswordUpdated = "Şifre Güncellendi";
     }
 }
